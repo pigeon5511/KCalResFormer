@@ -1,0 +1,147 @@
+{
+  "experiment_id": "kcalresformer_shared_exact_release_v1",
+  "dataset_version": "formal_dmrs_ber_20261023_v1",
+  "data_root": "data/formal_dmrs",
+  "output_root": "runs/formal",
+  "training_seeds": [
+    2026102301,
+    2026102302,
+    2026102303
+  ],
+  "batch_size": 512,
+  "early_stopping_patience": 10,
+  "minimum_improvement": 0.0,
+  "maximum_epochs": {
+    "exact_klmmse_residual": 500
+  },
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "scheduler": {
+    "name": "ExponentialLR",
+    "gamma": 0.995
+  },
+  "loss": "mean_per_observation_complex_MSE",
+  "selection_metric": "validation_selection_complex_MSE",
+  "num_workers": 0,
+  "checkpoint_every_updates": 50,
+  "mixed_precision": false,
+  "tf32": false,
+  "deterministic_algorithms": true,
+  "gradient_clip_norm": null,
+  "component_kwargs": {
+    "architecture": "hybrid",
+    "grid_shape": [
+      120,
+      14
+    ],
+    "patch_shape": [
+      3,
+      2
+    ],
+    "width": 32,
+    "depth": 6,
+    "heads": 4,
+    "ff_dim": 64,
+    "cnn_hidden": 13,
+    "dropout": 0.1
+  },
+  "calibration": {
+    "split": "calibration",
+    "objective": "mean_per_observation_NMSE",
+    "noise_scales": [
+      0,
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25,
+      0.5,
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "delay_scales": [
+      0.25,
+      0.5,
+      0.75,
+      1,
+      1.5,
+      2
+    ],
+    "doppler_scales": [
+      0.25,
+      0.5,
+      0.75,
+      1,
+      1.5,
+      2
+    ],
+    "maximum_boundary_expansions": 3,
+    "solve_dtype": "complex128"
+  },
+  "alpha": {
+    "split": "validation_alpha",
+    "channels": 2000,
+    "rule": "clip(sum(Re<delta,H-H0>/||H||^2)/sum(||delta||^2/||H||^2),0,1)",
+    "aggregation": "One global alpha pooled across three seeds and A/C observations"
+  },
+  "shared_source_layouts": [
+    "A",
+    "C"
+  ],
+  "specialist_layouts": [],
+  "layout_symbols": {
+    "A": [
+      2
+    ],
+    "B": [
+      2,
+      11
+    ],
+    "C": [
+      2,
+      7,
+      11
+    ],
+    "D": [
+      2,
+      5,
+      8,
+      11
+    ]
+  },
+  "comparison_methods": [
+    "exact-K-physical",
+    "exact_klmmse_residual",
+    "exact_alpha1"
+  ],
+  "comparison_scope": "Shared exact-K KCalResFormer only. A/C fitting and frozen B/D transfer.",
+  "receiver_for_future_test": "single_tap_ZF_uncoded_Gray_QPSK_common_1480_data_RE",
+  "final_test_policy": "Fitting cannot access the independent final test. Freeze three shared exact-K models, their source calibration and one pooled alpha before any final evaluation.",
+  "evaluation": {
+    "split": "validation_selection",
+    "channels": 8000,
+    "layouts": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "scope": "DEVELOPMENT_SELECTION_REEVALUATION_NOT_INDEPENDENT_TEST",
+    "bootstrap_repeats": 3000,
+    "bootstrap_seed": 2026103101,
+    "receiver": "single_tap_ZF_uncoded_Gray_QPSK_common_1480_data_RE"
+  },
+  "smoke": false,
+  "dataset_manifest_sha256": "391aea18ff6903d1cddae0fc0a329fd63768d12e8f3b4cce169e6c1f2bd1da07"
+}

@@ -1,0 +1,178 @@
+{
+  "dataset_version": "formal_dmrs_ber_20261023_v1",
+  "created_utc": "2026-10-23T02:33:55.660323+00:00",
+  "shard_size": 500,
+  "grid_shape": [
+    120,
+    14
+  ],
+  "channel_profile": "TDL-A",
+  "carrier": {
+    "NSizeGrid": 10,
+    "SubcarrierSpacing_kHz": 15,
+    "NCellID": 0,
+    "NSlot": 0,
+    "sample_rate_hz": 3840000,
+    "cyclic_prefix": "normal",
+    "antennas": [
+      1,
+      1
+    ]
+  },
+  "conditions": {
+    "snr_db": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25
+    ],
+    "delay_spread_ns": [
+      25,
+      50,
+      75,
+      100,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300
+    ],
+    "max_doppler_hz": [
+      50,
+      100,
+      150,
+      200,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      550,
+      600,
+      650,
+      700,
+      750,
+      800,
+      850,
+      900,
+      950,
+      1000
+    ],
+    "combinations": 1440
+  },
+  "layouts": {
+    "A": {
+      "symbols_zero_based": [
+        2
+      ],
+      "pilots": 40
+    },
+    "B": {
+      "symbols_zero_based": [
+        2,
+        11
+      ],
+      "pilots": 80
+    },
+    "C": {
+      "symbols_zero_based": [
+        2,
+        7,
+        11
+      ],
+      "pilots": 120
+    },
+    "D": {
+      "symbols_zero_based": [
+        2,
+        5,
+        8,
+        11
+      ],
+      "pilots": 160
+    }
+  },
+  "exposed_source_layouts": [
+    "A",
+    "C"
+  ],
+  "dmrs_type": 2,
+  "dmrs_port": 1000,
+  "splits": {
+    "calibration": {
+      "channels": 5000,
+      "views": 10000,
+      "seed_base": 2400000000,
+      "schedule_seed": 2440000001,
+      "role": "Fit physical-front-end coefficients using A/C only."
+    },
+    "train": {
+      "channels": 100000,
+      "views": 200000,
+      "seed_base": 2401000000,
+      "schedule_seed": 2440000002,
+      "role": "Neural training; nested channel prefixes 10000, 30000, 100000."
+    },
+    "validation": {
+      "channels": 10000,
+      "views": 20000,
+      "seed_base": 2402000000,
+      "schedule_seed": 2440000003,
+      "role": "IDs 1..8000: model selection; 8001..10000: global alpha fitting. A/C only."
+    }
+  },
+  "seed_stream_offsets": {
+    "channel": 0,
+    "data": 10000000,
+    "noise": 20000000
+  },
+  "smoke_seed_base": 2403000000,
+  "scheduling": "Each consecutive block of 1440 channels is a fresh permutation of all condition triples; incomplete block is a prefix. Nested prefixes are balanced to within one channel per condition.",
+  "waveform": "One common full-load QPSK waveform per independent channel, with the union of A/B/C/D reference symbols inserted. Only A/C observation masks are exposed. B/D are geometry metadata, not source observations.",
+  "ber": {
+    "modulation": "uncoded Gray QPSK",
+    "mapping": "X=((1-2*b0)+1j*(1-2*b1))/sqrt(2)",
+    "bits_axis_order": "tx_bits[subcarrier,symbol,bit_component,channel]; b0 real-sign, b1 imag-sign",
+    "data_RE": 1480,
+    "bits_per_channel": 2960,
+    "data_mask": "Complement of union of A/B/C/D potential pilot REs (200 RE); identical for every layout.",
+    "receiver": "Perfect timing; fixed single-tap ZF or MMSE equalizer must be frozen before final evaluation.",
+    "scope": "Uncoded BER. No transport-block coding/decoding or BLER. Common-waveform pilot-estimation benchmark, not separate standard-compliant PDSCH codeword generation per layout."
+  },
+  "noise": {
+    "placement": "Independent complex AWGN added on the demodulated 120x14 grid.",
+    "variance": "E|W|^2 = 10^(-snr_db/10) relative to nominal unit symbol/channel energy.",
+    "convention": "Es/N0-like nominal SNR, not measured receive SNR and not Eb/N0."
+  },
+  "metrics": {
+    "mse": "mean_RE(abs(H_hat-H_true)**2), complex MSE, 1680 RE, float64 accumulation, no factor 1/2",
+    "nmse": "sum_RE(abs(H_hat-H_true)**2)/sum_RE(abs(H_true)**2) per observation",
+    "aggregation": "Average per-observation linear metrics before 10*log10; preserve per-layout/per-condition/per-training-seed results. Paired channel-cluster uncertainty because A/C share H, X, Y and W.",
+    "saved_truth": "H_true complex64 and target_energy float64 = mean_RE(abs(H_true)**2) of the stored truth; save each fitted model prediction separately at evaluation."
+  },
+  "limitations": [
+    "Fixed 120x14 grid, TDL-A, ideal timing, exact nominal side information.",
+    "High Doppler waveform includes ICI: Y_noiseless need not equal H_true*X.",
+    "Calibration/validation are development data, not independent final tests.",
+    "Real and imaginary components and paired A/C views are not additional independent channels."
+  ],
+  "future_test": {
+    "status": "DEFERRED_UNTIL_MODEL_AND_EVALUATION_FREEZE",
+    "generated": false,
+    "minimum_independent_channels_per_scan_point": 2000,
+    "layouts": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "rule": "Create a separately hashed protocol with disjoint seeds after all models, calibration, alpha, receiver and metrics are frozen. Never use final B/D labels to tune."
+  },
+  "storage": "MAT v6 uncompressed, 500 independent channels/shard; shared H/X/Y stored once per channel, lazy A/C views via dataset_loader.py; atomic shard then SHA256 completion marker."
+}

@@ -1,0 +1,46 @@
+{
+  "status": "FORMAL_CHECKPOINTS_NOT_PRESENT_LOCALLY",
+  "method": "exact_klmmse_residual",
+  "fit_layouts": [
+    "A",
+    "C"
+  ],
+  "coefficients": [
+    0.03125,
+    0.5,
+    1.0
+  ],
+  "alpha": 0.888708221815786,
+  "source_freeze_sha256": "448561ab6ddd5fa6917373264775ecfc318395d202d22121b6b3d65e4cfb2b30",
+  "source_calibration_sha256": "54d3c3665edfe0c4f1e29776ae1c0752ec2c9f16bb81e9627f2c0c3d6359ca65",
+  "source_alpha_sha256": "ced34857145bee0ac97fe64732584026c3eef2bd0a29cdae49a774f92c6b1ca9",
+  "runs": [
+    {
+      "method": "exact_klmmse_residual",
+      "seed": 2026102301,
+      "checkpoint": "training/2026102301/exact_klmmse_residual/best.pt",
+      "sha256": "4f4941d5cbe98c8e2a1b1f175e7e1be56922c5d18335da71a11b54d71ace5091",
+      "epochs": 33,
+      "updates": 12903,
+      "complex_observation_exposures": 6600000
+    },
+    {
+      "method": "exact_klmmse_residual",
+      "seed": 2026102302,
+      "checkpoint": "training/2026102302/exact_klmmse_residual/best.pt",
+      "sha256": "1796ed6f72a2446ecfea634083d68c7201e16a82a362e19650e474d7940e517c",
+      "epochs": 41,
+      "updates": 16031,
+      "complex_observation_exposures": 8200000
+    },
+    {
+      "method": "exact_klmmse_residual",
+      "seed": 2026102303,
+      "checkpoint": "training/2026102303/exact_klmmse_residual/best.pt",
+      "sha256": "a6b180e54319199e843f48df922c056113df5b160bd37d75bb707d12f687bb4b",
+      "epochs": 46,
+      "updates": 17986,
+      "complex_observation_exposures": 9200000
+    }
+  ]
+}

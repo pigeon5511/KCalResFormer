@@ -1,0 +1,41 @@
+{
+  "format_version": "kcalresformer-v1",
+  "model_name": "kcalresformer",
+  "frontend_mode": "exact",
+  "component_kwargs": {
+    "architecture": "hybrid",
+    "grid_shape": [
+      120,
+      14
+    ],
+    "patch_shape": [
+      3,
+      2
+    ],
+    "width": 32,
+    "depth": 6,
+    "heads": 4,
+    "ff_dim": 64,
+    "cnn_hidden": 13,
+    "dropout": 0.1
+  },
+  "coefficients": [
+    0.03125,
+    0.5,
+    1.0
+  ],
+  "alpha": 0.888708221815786,
+  "fit_layouts": [
+    "A",
+    "C"
+  ],
+  "inference_layouts": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "parameters": 61741,
+  "weights_included": false,
+  "description": "Published-experiment configuration. create_model initializes a new neural branch; load a verified checkpoint for trained inference."
+}
