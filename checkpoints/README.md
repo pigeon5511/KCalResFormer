@@ -1,7 +1,13 @@
-# Checkpoints
+# Model checkpoints
 
-The paper's three shared exact-K checkpoints were not found locally. No neural weights are included. Expected source hashes are in `configs/checkpoint_manifest.json`.
+Pretrained weights are not bundled. Train the model using `scripts/train.py`, then export a checkpoint for inference.
 
-Recover `training/<seed>/exact_klmmse_residual/best.pt` from the original formal server output, then run `scripts/import_checkpoint.py` with the corresponding seed. The importer rejects early-development and layout-specialist checkpoints whose hashes differ.
+Run from the repository root:
 
-New retraining outputs can be exported using `--fit-root`. Smoke weights remain labeled `SMOKE_ONLY` and are not paper checkpoints. Generated `.pt` files are ignored by Git by default; publish verified weights as a separate release asset if desired.
+```bash
+python scripts/import_checkpoint.py --fit-root runs/formal --seed 2026102301 --output checkpoints/kcalresformer.pt
+```
+
+Use the exported file with `scripts/infer.py` or `scripts/evaluate.py`. The checkpoint includes the neural weights, calibrated physical parameters and fitted residual scale.
+
+Generated `.pt` files are excluded from Git by default. Model weights can be distributed separately as GitHub release assets.

@@ -12,6 +12,6 @@ The public frontend uses CPU complex128 with an eigensystem cache, casts the phy
 
 Training/selection use complex MSE. Physical calibration and alpha fitting use per-observation NMSE. The descriptive evaluator averages linear NMSE before converting to dB. Neither validation-selected minima nor smoke metrics are independent test estimates. BER, if evaluated, uses the common data mask and uncoded Gray-QPSK sign decisions; NMSE gains alone do not imply BER gains.
 
-The archived workflow specifies Python 3.12, CUDA PyTorch, NumPy and SciPy; it recommends retaining NumPy 1.26.4 when using PyTorch 2.2.2 to avoid the old PyTorch/NumPy 2 ABI mismatch. The complete runtime metadata of the missing three shared checkpoints has not been verified here. No exact reproducibility across software versions or GPUs is claimed.
+The archived workflow specifies Python 3.12, CUDA PyTorch, NumPy and SciPy; it recommends retaining NumPy 1.26.4 when using PyTorch 2.2.2 to avoid the old PyTorch/NumPy 2 ABI mismatch. No exact reproducibility across software versions or GPUs is claimed.
 
 `scripts/evaluate.py` is a portable single-model subset evaluator. Paper-level bootstrap intervals, baseline comparisons, three-seed aggregation and latency figures require the original experimental analysis, which is outside this package.

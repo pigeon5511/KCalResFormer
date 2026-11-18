@@ -1,13 +1,11 @@
-# 整理交付状态
+# 发布内容
 
-完成：共享精确 KCalResFormer 的独立目录、模型和配置、数据生成/训练/数据转换/推理/评估入口、合成示例、英文与中文说明、忽略规则、项目 MIT 许可和外部依赖说明。
+本仓库提供共享 KCalResFormer 的模型实现、配置、MATLAB 数据生成器、训练流程、推理与评估脚本，以及中英文使用指南。
 
-中文说明见 [README_zh.md](README_zh.md)，源码校验清单位于 `configs/SOURCE_MANIFEST.json`，第三方依赖说明已合并到[项目首页](../README.md#third-party-dependencies)。
+完整数据和预训练权重不随仓库分发。按照[数据生成指南](DATA_GENERATION.md)生成源数据后，可运行训练入口并导出自己的模型。
 
-数据生成：已接入原正式实验 MATLAB 生成器，默认生成 115,000 个源信道，支持种子计划、MATLAB 检查、冻结、分片续跑、数据重放和完整审计。已实际生成 24 信道的小样本，跑通生成到训练、权重导出和评估的流程；未重新生成完整数据或正式训练。需要 MATLAB 和 5G Toolbox，完整命令见 `DATA_GENERATION.md`。
+中文指南见 [README_zh.md](README_zh.md)，英文说明及第三方依赖要求见[项目首页](../README.md#third-party-dependencies)。源码清单位于 `configs/SOURCE_MANIFEST.json`。
 
-正式权重：已记录论文共享模型三个种子的 SHA256、物理系数和 alpha，尚未找到匹配的本地检查点。`checkpoints/` 仅保留说明；从原训练服务器恢复 `best.pt` 后使用导入脚本校验，不能用早期或专用模型替代。
+小样本流程用于检查生成、训练、导出和评估接口；模型性能应在独立测试集上评估。数据生成需要 MATLAB 和 5G Toolbox，完整训练需要支持 CUDA 的 PyTorch。
 
-公开元数据：项目采用 MIT 许可，版权署名为 `Copyright (c) 2026 Yusheng Zhang`；正式论文链接和引用条目尚待补充。源数据可以用随包生成器自行生成。
-
-范围：本次没有启动正式训练、独立最终集评估或 GitHub 上传。本地验证和源码来源记录单独存档，不随源码发布。
+本项目采用 MIT 许可，版权署名为 `Copyright (c) 2026 Yusheng Zhang`。
